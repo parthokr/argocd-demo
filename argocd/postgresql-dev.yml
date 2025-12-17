@@ -16,7 +16,7 @@ spec:
       helm:
         valueFiles:
           - $values/apps/postgresql/values-dev.yaml
-    - repoURL: https://github.com/your-username/my-gitops-repo.git
+    - repoURL: https://github.com/parthokr/argocd-demo.git
       targetRevision: main
       ref: values
   
