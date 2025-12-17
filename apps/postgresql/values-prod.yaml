@@ -1,0 +1,11 @@
+primary:
+  persistence:
+    size: 1Gi
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+readReplicas:
+  replicaCount: 2  # High Availability for Prod
+auth:
+  database: prod_db
