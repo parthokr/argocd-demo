@@ -1,0 +1,22 @@
+# argocd/vault.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: vault
+    repoURL: https://helm.releases.hashicorp.com
+    targetRevision: 0.31.0
+    helm:
+      values: |
+        server:
+          dev:
+            enabled: true     # For testing; in prod use standalone/ha
+          postStart:          # "Automating" the unseal/config for demo
+            - [/bin/sh, -c, "sleep 5; vault auth enable kubernetes; vault write auth/kubernetes/config kubernetes_host=https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"]
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
