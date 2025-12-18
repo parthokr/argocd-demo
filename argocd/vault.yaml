@@ -17,6 +17,13 @@ spec:
             enabled: true     # For testing; in prod use standalone/ha
           postStart:          # "Automating" the unseal/config for demo
             - [/bin/sh, -c, "sleep 5; vault auth enable kubernetes; vault write auth/kubernetes/config kubernetes_host=https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
