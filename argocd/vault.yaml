@@ -15,8 +15,17 @@ spec:
         server:
           dev:
             enabled: true
-          postStart:
-            - [/bin/sh, -c, "sleep 5; vault auth enable kubernetes; vault write auth/kubernetes/config kubernetes_host=https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"]
+        postStart:
+          - [/bin/sh, -c, |
+              sleep 5;
+              export VAULT_ADDR='http://127.0.0.1:8200';
+              export VAULT_TOKEN='root';
+              
+              vault auth enable kubernetes || true;
+              
+              vault write auth/kubernetes/config \
+                  kubernetes_host="https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT" || true;
+            ]
   syncPolicy:
     automated:
       prune: true
